@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <meta charset="utf-8" /> 
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <!-- CSS -->
+    </head>
+    <body>
+        <form>
+            <SELECT id="search_dropdown_1" name="search_dropdown_1">
+                <option value="*">- Select -</option>
+            </SELECT>
+            
+            <input type="text" name="search_box_1">
+
+            <br>
+   
+            <select id="search_dropdown_2" name="search_dropdown_2">
+                <option value="*">- Select -</option>
+            </select>
+
+            <input type="text" name="search_box_2">
+	
+            <br>
+    
+            <select id="search_dropdown_3" name="search_dropdown_3">
+                <option value="*">- Select -</option>
+            </select>
+
+             <input type="text" name="search_box_3">
+             <br>
+             <br>
+            Pick One Sort by: <input type="checkbox" name="sort1" value="foldchange" /> Fold change
+            <input type="checkbox" name="sort2" value="gene_symbol" /> Gene symbol
+            <input type="checkbox" name="sort3" value="goTitle" /> GO title
+            <input type="checkbox" name="sort4" value="goID" /> GO ID
+            <input type="checkbox" name="sort5" value="sort_pathway" /> Pathway<br
+/>
+        <input type="submit" class="submit" id="submit" value="Submit" /> 
+        </form>
+        <script type="text/javascript">
+            //document ready function
+            $(document).ready(function(){ // wait until doc. completely loaded
+                updatefirstInput();  
+                    
+                $('#search_dropdown_1').on('change', function(){
+                });
+                $("#search_dropdown_2").prop('disabled',true);
+                $("#search_dropdown_3").prop('disabled',true);
+
+
+            });
+            
+            var updatefirstInput = function(){
+                //get the gene names into the target gene drop down menu
+                //use ajax here
+                //note the different parameters and the function used to write the new options
+                $.ajax({
+                    url: 'https://bioed.bu.edu/cgi-bin/students_20/groupG/ajax_test_cgi.py',
+                    type: 'get',
+                    //it's important to write the data correctly, name:value pairs, as strings, in braces 
+                    data: {'names':'selectnames'},
+                    //define a function to use the ajax response
+                    success: function(response){
+                        //trim off the trailing newline in the response, split the response into parts at the 
+                        //remaining new lines, and store the parts in the lines array
+                        //for each line of the response, write an input option 
+                        var lines = response.trim().split("\n");
+                        lines.forEach(function(value){
+                            //.append means to add at the end of what's already there in this element
+                            $("#search_dropdown_1").append("<option value='"+value+"'>"+value+"</option>");
+                        });
+                    }
+                });
+            };
+
+
+            
+
+
+        </script>
+    </body>
+</html>
